@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Импульс 2026 — финал</title>
+<style>
+  @font-face {
+    font-family: 'ALS Hauss';
+    src: url('assets/fonts/ALSHauss-Regular.woff2') format('woff2');
+    font-weight: 400; font-display: block;
+  }
+  @font-face {
+    font-family: 'ALS Hauss';
+    src: url('assets/fonts/ALSHauss-Medium.woff2') format('woff2');
+    font-weight: 500; font-display: block;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px; overflow: hidden;
+    background: #000; color: #fff;
+    font-family: 'ALS Hauss', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+  }
+
+  body { padding: 64px; display: grid; grid-template-rows: auto 1fr; row-gap: 48px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; }
+  h1 { font-size: 136px; font-weight: 500; line-height: 0.85; letter-spacing: -0.05em; }
+  h1 em { font-style: normal; color: #1DAFF7; }
+  .plus { font-size: 56px; font-weight: 500; color: #1DAFF7; letter-spacing: -0.04em; }
+  .grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 24px; }
+  .cell { background: #111; padding: 40px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .cell.tall { grid-row: span 2; }
+  .cell.accent { background: #1DAFF7; color: #000; }
+  .cell .k { font-size: 20px; color: #AEB1B7; margin-bottom: 16px; }
+  .cell.accent .k { color: #000; opacity: .6; }
+  .cell .v { font-size: 56px; font-weight: 500; line-height: 0.95; letter-spacing: -0.03em; }
+  .cell.tall .v { font-size: 92px; }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>Финал<br><em>четырёх</em></h1>
+    <div class="plus">+1</div>
+  </header>
+  <div class="grid">
+    <div class="cell tall"><div class="k">Осталось</div><div class="v">15:00</div></div>
+    <div class="cell accent"><div class="k">Раунд</div><div class="v">Финал</div></div>
+    <div class="cell"><div class="k">Голосует</div><div class="v">Зал</div></div>
+    <div class="cell"><div class="k">Превью</div><div class="v">Нет</div></div>
+    <div class="cell"><div class="k">Победитель</div><div class="v">Один</div></div>
+  </div>
+</body>
+</html>

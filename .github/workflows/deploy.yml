@@ -41,6 +41,14 @@ jobs:
         env:
           GITHUB_PAGES: 'true'
 
+      # Редактор и бандлы раундов едут рядом с приложением:
+      # /            — инструмент оператора
+      # /editor/      — оглавление раундов
+      # /editor/round-01/ … — редактор с макетом раунда
+      - name: Собрать бандлы раундов
+        working-directory: .
+        run: ./editor/build-all.sh web/dist/editor
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist
