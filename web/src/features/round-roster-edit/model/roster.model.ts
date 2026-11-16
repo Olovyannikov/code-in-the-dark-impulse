@@ -7,6 +7,7 @@ import { createModel } from '@/shared/lib/create-model';
 
 type Move = { participantId: string; toRoundId: string };
 type Removal = { participantId: string; roundId: string };
+type Addition = { participantId: string; roundId: string };
 
 /** Состав идущего раунда не трогаем: люди уже сидят за машинами. */
 const isEditable = (round: Round) => round.status === 'pending';
@@ -38,6 +39,23 @@ function moveParticipant(tournament: Tournament, { participantId, toRoundId }: M
   };
 }
 
+/** Опоздавший: человек есть в списке участников, но ни в одном раунде не сидит. */
+function addToRoster(tournament: Tournament, { participantId, roundId }: Addition): Tournament {
+  const target = tournament.rounds.find((round) => round.id === roundId);
+
+  if (!target || !isEditable(target)) return tournament;
+  if (target.participantIds.includes(participantId)) return tournament;
+
+  return {
+    ...tournament,
+    rounds: tournament.rounds.map((round) =>
+      round.id === roundId
+        ? { ...round, participantIds: [...round.participantIds, participantId] }
+        : round,
+    ),
+  };
+}
+
 function removeFromRoster(tournament: Tournament, { participantId, roundId }: Removal): Tournament {
   return {
     ...tournament,
@@ -56,6 +74,7 @@ function removeFromRoster(tournament: Tournament, { participantId, roundId }: Re
 export const RosterModel = createModel(() => {
   const rosterParticipantMoved = createEvent<Move>();
   const rosterParticipantRemoved = createEvent<Removal>();
+  const rosterParticipantAdded = createEvent<Addition>();
 
   sample({
     clock: rosterParticipantMoved,
@@ -71,5 +90,12 @@ export const RosterModel = createModel(() => {
     target: TournamentModel.tournamentReplaced,
   });
 
-  return { rosterParticipantMoved, rosterParticipantRemoved };
+  sample({
+    clock: rosterParticipantAdded,
+    source: TournamentModel.$tournament,
+    fn: addToRoster,
+    target: TournamentModel.tournamentReplaced,
+  });
+
+  return { rosterParticipantMoved, rosterParticipantRemoved, rosterParticipantAdded };
 });

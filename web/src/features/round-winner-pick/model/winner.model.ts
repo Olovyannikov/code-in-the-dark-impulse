@@ -1,10 +1,8 @@
 import { createEvent, sample } from 'effector';
 
 import type { Tournament } from '@/entities/tournament';
-import { TournamentModel } from '@/entities/tournament';
+import { rebuildFinal, TournamentModel } from '@/entities/tournament';
 import { createModel } from '@/shared/lib/create-model';
-
-import { rebuildFinal } from '../lib/rebuild-final';
 
 type WinnerPick = { roundId: string; winnerId: string };
 type FinalistSwap = { outId: string; inId: string };

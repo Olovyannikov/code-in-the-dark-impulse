@@ -51,6 +51,12 @@ test('paused: остаток берётся из remainingMs и не завис�
   expect(remainingMsAt(round, 9_999_999)).toBe(123_000);
 });
 
+test('часы ушли назад и раунд поставили на паузу: остаток не превышает durationMs', () => {
+  const round: Round = { ...base, status: 'paused', deadlineAt: null, remainingMs: 900_000 };
+
+  expect(remainingMsAt(round, 1_000)).toBe(600_000);
+});
+
 test('timeup: остаток 0', () => {
   const round: Round = { ...base, status: 'timeup', remainingMs: 0 };
 

@@ -87,3 +87,36 @@ test('удаление из состава не удаляет самого уч
   expect(roundById(scope, 'h0')?.participantIds).toEqual(['a']);
   expect(scope.getState(TournamentModel.$participants)).toHaveLength(4);
 });
+
+test('опоздавшего можно добавить в непустой отбор', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'])]);
+
+  await allSettled(RosterModel.rosterParticipantAdded, {
+    scope,
+    params: { participantId: 'c', roundId: 'h0' },
+  });
+
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b', 'c']);
+});
+
+test('в идущий раунд опоздавшего не сажаем', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'], 'running')]);
+
+  await allSettled(RosterModel.rosterParticipantAdded, {
+    scope,
+    params: { participantId: 'c', roundId: 'h0' },
+  });
+
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b']);
+});
+
+test('повторное добавление того же человека ничего не меняет', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'])]);
+
+  await allSettled(RosterModel.rosterParticipantAdded, {
+    scope,
+    params: { participantId: 'a', roundId: 'h0' },
+  });
+
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b']);
+});

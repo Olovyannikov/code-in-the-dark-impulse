@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import type { Round } from '@/entities/round';
-import type { Tournament } from '@/entities/tournament';
+import type { Round } from '@/entities/round/@x/tournament';
+import type { Tournament } from '../model/tournament.contract';
 import { FINAL_DURATION_MS } from '@/shared/config';
 
 import { rebuildFinal } from './rebuild-final';

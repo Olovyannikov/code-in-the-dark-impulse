@@ -1,5 +1,6 @@
 import type { Participant } from '@/entities/participant';
 import type { Tournament } from '@/entities/tournament';
+import { rebuildFinal } from '@/entities/tournament';
 
 export function addParticipants(tournament: Tournament, names: string[]): Tournament {
   const added: Participant[] = names.map((name) => ({ id: crypto.randomUUID(), name }));
@@ -24,7 +25,7 @@ export function renameParticipant(
  * иначе агрегат перестанет проходить проверку ссылочной целостности.
  */
 export function removeParticipant(tournament: Tournament, id: string): Tournament {
-  return {
+  return rebuildFinal({
     ...tournament,
     participants: tournament.participants.filter((person) => person.id !== id),
     rounds: tournament.rounds.map((round) => {
@@ -39,5 +40,5 @@ export function removeParticipant(tournament: Tournament, id: string): Tournamen
         status: wasWinner ? ('pending' as const) : round.status,
       };
     }),
-  };
+  });
 }

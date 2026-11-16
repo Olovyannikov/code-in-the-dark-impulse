@@ -1,7 +1,8 @@
-import type { Round } from '@/entities/round';
-import type { Tournament } from '@/entities/tournament';
-import { collectHeatWinners } from '@/entities/tournament';
+import type { Round } from '@/entities/round/@x/tournament';
 import { FINAL_DURATION_MS } from '@/shared/config';
+
+import type { Tournament } from '../model/tournament.contract';
+import { collectHeatWinners } from './bracket';
 
 const sameMembers = (left: readonly string[], right: readonly string[]) =>
   left.length === right.length && left.every((id, index) => id === right[index]);

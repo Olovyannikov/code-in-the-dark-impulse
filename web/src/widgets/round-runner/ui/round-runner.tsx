@@ -4,7 +4,8 @@ import { useUnit } from 'effector-react';
 import { RoundStatusBadge } from '@/entities/round';
 import { TournamentModel } from '@/entities/tournament';
 import { remainingMsAt, RoundControls, RoundRunModel } from '@/features/round-run';
-import { WinnerPicker } from '@/features/round-winner-pick';
+import { RosterEditor } from '@/features/round-roster-edit';
+import { FinalistSwap, WinnerPicker } from '@/features/round-winner-pick';
 import { formatMmSs } from '@/shared/lib/time';
 import { routes } from '@/shared/routes';
 
@@ -57,6 +58,10 @@ export function RoundRunner() {
       )}
 
       <RoundControls round={round} />
+
+      <RosterEditor round={round} />
+
+      <FinalistSwap round={round} />
 
       {isOver && <WinnerPicker round={round} participants={participants} />}
     </Stack>

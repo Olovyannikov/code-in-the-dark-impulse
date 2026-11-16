@@ -1,4 +1,4 @@
-import { Button, Group } from '@mantine/core';
+import { Button, Group, NumberInput } from '@mantine/core';
 import { useUnit } from 'effector-react';
 import { match } from 'ts-pattern';
 
@@ -11,12 +11,13 @@ type Props = { round: Round };
 const MINUTE = 60_000;
 
 export function RoundControls({ round }: Props) {
-  const { onStart, onPause, onResume, onStop, onExtend } = useUnit({
+  const { onStart, onPause, onResume, onStop, onExtend, onDuration } = useUnit({
     onStart: RoundRunModel.roundStarted,
     onPause: RoundRunModel.roundPaused,
     onResume: RoundRunModel.roundResumed,
     onStop: RoundRunModel.roundStoppedEarly,
     onExtend: RoundRunModel.roundTimeExtended,
+    onDuration: RoundRunModel.roundDurationChanged,
   });
 
   const primary = match(round.status)
@@ -42,6 +43,22 @@ export function RoundControls({ round }: Props) {
 
   return (
     <Group>
+      {/* Регламент разрешает резать отборы до старта — например до 8 минут. */}
+      {round.status === 'pending' && (
+        <NumberInput
+          label="Минут на раунд"
+          w={150}
+          min={1}
+          max={60}
+          value={Math.round(round.durationMs / MINUTE)}
+          onChange={(value) => {
+            const minutes = Number(value);
+            if (Number.isFinite(minutes) && minutes > 0) {
+              onDuration({ roundId: round.id, durationMs: minutes * MINUTE });
+            }
+          }}
+        />
+      )}
       {primary}
       {isLive && (
         <Button size="lg" color="red" variant="light" onClick={() => onStop(round.id)}>

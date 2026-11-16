@@ -4,3 +4,4 @@ export { EMPTY_TOURNAMENT, STORAGE_KEY, TournamentModel } from './model/tourname
 export { canSeed, splitIntoHeats } from './lib/seed';
 export type { SeedVerdict } from './lib/seed';
 export { collectHeatWinners, findChampionId } from './lib/bracket';
+export { rebuildFinal } from './lib/rebuild-final';

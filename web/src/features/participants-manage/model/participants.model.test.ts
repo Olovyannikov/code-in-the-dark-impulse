@@ -113,3 +113,45 @@ test('удаление победителя снимает его победу',
   expect(updated.winnerId).toBeNull();
   expect(updated.status).toBe('pending');
 });
+
+test('удаление победителя отбора пересобирает финал, а не оставляет дырку', async () => {
+  const final: Round = {
+    id: 'f',
+    kind: 'final',
+    order: 2,
+    participantIds: ['a', 'b'],
+    status: 'finished',
+    winnerId: 'a',
+    durationMs: 900_000,
+    deadlineAt: null,
+    remainingMs: 0,
+  };
+  const heats: Round[] = [
+    { ...round, id: 'h0', order: 0, participantIds: ['a'], winnerId: 'a' },
+    { ...round, id: 'h1', order: 1, participantIds: ['b'], winnerId: 'b' },
+  ];
+  const scope = fork({
+    values: [
+      [
+        TournamentModel.$tournament,
+        {
+          ...EMPTY_TOURNAMENT,
+          participants: [
+            { id: 'a', name: 'Аня' },
+            { id: 'b', name: 'Боря' },
+          ],
+          rounds: [...heats, final],
+          seededAt: 1,
+        },
+      ],
+    ],
+  });
+
+  await allSettled(ParticipantsModel.participantRemoved, { scope, params: 'a' });
+
+  // Аня выигрывала отбор h0; после её удаления у h0 нет победителя,
+  // а значит финала существовать не должно вовсе — иначе он висит
+  // с неполным составом и сбивает экран итогов.
+  expect(scope.getState(TournamentModel.$championId)).toBeNull();
+  expect(scope.getState(TournamentModel.$finalRound)).toBeNull();
+});

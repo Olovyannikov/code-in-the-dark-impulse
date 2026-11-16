@@ -26,6 +26,13 @@ export const TournamentModel = createModel(() => {
   const storagePickedUp = createEvent();
   const storageRestored = createEvent<Tournament>();
   const storageFailed = createEvent<Fail<Error>>();
+  /**
+   * Битым считаем только отказ чтения или валидации. Отказ ЗАПИСИ
+   * (кончилась квота, приватный режим, заблокированные site data) —
+   * не повод подменять весь интерфейс экраном восстановления: оператор
+   * мгновенно потерял бы сетку и таймер посреди раунда.
+   */
+  const storageReadFailed = createEvent<Fail<Error>>();
   /** Хранилище отработало чтение: только теперь можно решать, какой экран открыть. */
   const storagePickupSettled = createEvent();
   /** Оператор выбрал начать турнир с нуля поверх повреждённых данных. */
@@ -44,7 +51,7 @@ export const TournamentModel = createModel(() => {
     .on(storageRestored, (_, restored) => restored);
 
   const $storageBroken = createStore(false)
-    .on(storageFailed, () => true)
+    .on(storageReadFailed, () => true)
     .reset(brokenStorageDiscarded);
 
   const $rawBrokenPayload = createStore<string | null>(null).on(
@@ -68,12 +75,29 @@ export const TournamentModel = createModel(() => {
   const $heatWinnerIds = $rounds.map(collectHeatWinners);
   const $championId = $rounds.map(findChampionId);
 
-  sample({ clock: storageFailed, target: readRawStorageFx });
+  // Типы effector-storage объявляют только 'get' | 'set', но на провале
+  // контракта рантайм присылает 'validate' — поэтому предикат от обратного.
+  sample({
+    clock: storageFailed,
+    filter: ({ operation }) => operation !== 'set',
+    target: storageReadFailed,
+  });
+
+  sample({ clock: storageReadFailed, target: readRawStorageFx });
 
   sample({
     clock: brokenStorageDiscarded,
     fn: () => EMPTY_TOURNAMENT,
     target: tournamentReplaced,
+  });
+
+  // Пишем напрямую: $tournament уже равен EMPTY_TOURNAMENT по ссылке,
+  // обновление стора не произойдёт, и битый текст остался бы в хранилище —
+  // после F5 оператор снова увидел бы экран восстановления.
+  sample({
+    clock: brokenStorageDiscarded,
+    fn: () => EMPTY_TOURNAMENT,
+    target: tournamentPersisted,
   });
 
   // Пока хранилище признано битым, в него не пишем: оператор ещё может выгрузить сырые данные.

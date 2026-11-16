@@ -22,10 +22,20 @@ export const TickerModel = createModel(() => {
 
   const { tick } = interval({ timeout: 1000, start: tickingStarted, stop: tickingStopped });
 
+  // Два случая разведены намеренно. Общий clock с $enabled работал только
+  // потому, что стор объявлен выше по файлу, — перестановка двух строк
+  // молча остановила бы часы, и ни один тест бы не покраснел.
   sample({
-    clock: [tickingEnabled, RoundRunModel.$hasRunningRound],
-    source: { enabled: $enabled, running: RoundRunModel.$hasRunningRound },
-    filter: ({ enabled, running }) => enabled && running,
+    clock: tickingEnabled,
+    source: RoundRunModel.$hasRunningRound,
+    filter: Boolean,
+    target: tickingStarted,
+  });
+
+  sample({
+    clock: RoundRunModel.$hasRunningRound,
+    source: $enabled,
+    filter: (enabled, running) => enabled && running,
     target: tickingStarted,
   });
 

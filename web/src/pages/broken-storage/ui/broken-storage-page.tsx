@@ -16,8 +16,12 @@ export function BrokenStoragePage() {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'citd-tournament-raw.json';
+    // Якорь должен быть в документе, а ссылку нельзя отзывать синхронно:
+    // иначе в части браузеров единственный путь спасти данные молча не сработает.
+    document.body.append(link);
     link.click();
-    URL.revokeObjectURL(url);
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   return (

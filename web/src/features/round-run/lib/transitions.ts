@@ -25,7 +25,9 @@ export function pauseRound(round: Round, now: number): Round {
   return {
     ...round,
     status: 'paused',
-    remainingMs: Math.max(round.deadlineAt - now, 0),
+    // Верхняя граница та же, что в remainingMsAt: скачок системных часов
+    // назад не должен выдавать раунду больше времени, чем у него было.
+    remainingMs: Math.min(Math.max(round.deadlineAt - now, 0), round.durationMs),
     deadlineAt: null,
   };
 }

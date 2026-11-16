@@ -18,7 +18,7 @@ export function remainingMsAt(round: Round, now: number): number {
       // нижняя — от сна ноутбука, после которого дедлайн давно в прошлом.
       return Math.min(Math.max(round.deadlineAt - now, 0), round.durationMs);
     })
-    .with('paused', () => round.remainingMs ?? round.durationMs)
+    .with('paused', () => Math.min(round.remainingMs ?? round.durationMs, round.durationMs))
     .with('timeup', () => 0)
     .with('finished', () => round.remainingMs ?? 0)
     .exhaustive();
