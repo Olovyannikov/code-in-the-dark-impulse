@@ -26,13 +26,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: web/package-lock.json
 
-      # Не npm ci: lock генерируется на macOS и для Linux-раннера неполон —
-      # npm пишет безверсионные заглушки для необязательных peer-зависимостей
-      # rolldown, на которых npm ci падает с «Invalid Version».
-      - run: npm install --no-audit --no-fund
+      # Lock генерируется на macOS и для Linux-раннера неполон: npm пишет
+      # безверсионные заглушки для необязательных peer-зависимостей rolldown,
+      # на которых и npm ci, и npm install падают с «Invalid Version».
+      # Локально lock рабочий и остаётся в репозитории, здесь — разрешаем заново.
+      - run: rm -f package-lock.json && npm install --no-audit --no-fund
 
       - run: npx vitest run
 
