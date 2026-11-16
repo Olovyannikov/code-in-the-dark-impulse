@@ -2,7 +2,6 @@ import { combine, createEvent, createStore, sample } from 'effector';
 import { once } from 'patronum';
 
 import { TournamentModel } from '@/entities/tournament';
-import { TickerModel } from '@/features/round-run';
 import { routes } from '@/shared/routes';
 
 import { historyCreatedFx, router } from '../routes/router';
@@ -23,7 +22,8 @@ sample({ clock: appStarted, target: TournamentModel.storagePickedUp });
 
 sample({ clock: once(TournamentModel.storagePickupSettled), target: historyCreatedFx });
 
-sample({ clock: appStarted, target: TickerModel.tickingEnabled });
+// Драйвер реального времени подключается в main.tsx, а не здесь: интервал
+// держит незавершённый эффект, и любой allSettled по старту ждал бы его вечно.
 
 // combine, а не sample({ source }): только combine пересчитывается
 // от форкнутых значений, иначе стор застревает на модульном дефолте.

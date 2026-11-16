@@ -12,11 +12,28 @@ const theme = createTheme({
   },
   fontFamily: "'ALS Hauss', Helvetica, Arial, sans-serif",
   headings: { fontFamily: "'ALS Hauss', Helvetica, Arial, sans-serif" },
+  // Фон «Импульса» — чистый чёрный, а не дефолтный тёмно-серый Mantine.
+  other: { impulseBlack: '#000000' },
+});
+
+const cssVariablesResolver = () => ({
+  variables: {},
+  light: {},
+  dark: {
+    '--mantine-color-body': '#000000',
+    '--mantine-color-text': '#FFFFFF',
+    '--mantine-color-dimmed': '#AEB1B7',
+  },
 });
 
 export function AppProvider({ children }: PropsWithChildren) {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark" forceColorScheme="dark">
+    <MantineProvider
+      theme={theme}
+      defaultColorScheme="dark"
+      forceColorScheme="dark"
+      cssVariablesResolver={cssVariablesResolver}
+    >
       {children}
     </MantineProvider>
   );
