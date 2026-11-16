@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Импульс 2026 — диагональ</title>
+<style>
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Black.woff2') format('woff2'); font-weight:900; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:1920px; height:1080px; overflow:hidden; position:relative;
+         background:#000; color:#fff; font-family:'ALS Hauss', Helvetica, Arial, sans-serif; }
+
+  .half { position:absolute; inset:0; background:#1DAFF7; z-index:1;
+          clip-path:polygon(0 0, 62% 0, 38% 100%, 0 100%); }
+  .top { position:absolute; top:48px; left:64px; right:64px; display:flex; justify-content:space-between;
+         align-items:center; z-index:6; font-size:20px; font-weight:500; }
+  .top .l { color:#000; }
+  .left { position:absolute; top:330px; left:96px; width:620px; z-index:4; color:#000; }
+  .left h1 { font-size:126px; font-weight:500; line-height:0.84; letter-spacing:-0.045em; }
+  .left p { margin-top:26px; font-size:24px; line-height:1.45; }
+  .right { position:absolute; top:380px; right:120px; width:560px; z-index:4; text-align:right; }
+  .right .n { font-size:200px; font-weight:500; line-height:0.82; letter-spacing:-0.05em; color:#1DAFF7; }
+  .right .t { margin-top:18px; font-size:26px; color:#AEB1B7; }
+  .stamp { position:absolute; top:620px; left:800px; z-index:7; transform:rotate(-16deg);
+           border:4px solid #fff; color:#fff; padding:18px 30px; font-size:34px; font-weight:500;
+           letter-spacing:.06em; text-transform:uppercase; }
+  .foot { position:absolute; bottom:48px; left:64px; right:64px; display:flex; justify-content:space-between;
+          font-size:18px; z-index:6; }
+  .foot .l { color:#000; }
+  .foot .r { color:#AEB1B7; }
+</style>
+</head>
+<body>
+
+  <div class="half"></div>
+  <div class="top"><span class="l">Code in the Dark</span><span>+1</span></div>
+  <div class="left">
+    <h1>Четыре<br>отбора</h1>
+    <p>По четыре человека. Десять минут. Один победитель уходит в финал.</p>
+  </div>
+  <div class="right">
+    <div class="n">16</div>
+    <div class="t">участников<br>в темноте</div>
+  </div>
+  <div class="stamp">Без превью</div>
+  <div class="foot"><span class="l">Импульс 2026</span><span class="r">19 ноября</span></div>
+</body>
+</html>

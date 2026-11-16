@@ -4,51 +4,60 @@
 <meta charset="utf-8">
 <title>Импульс 2026 — финал</title>
 <style>
-  @font-face {
-    font-family: 'ALS Hauss';
-    src: url('assets/fonts/ALSHauss-Regular.woff2') format('woff2');
-    font-weight: 400; font-display: block;
-  }
-  @font-face {
-    font-family: 'ALS Hauss';
-    src: url('assets/fonts/ALSHauss-Medium.woff2') format('woff2');
-    font-weight: 500; font-display: block;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    width: 1920px; height: 1080px; overflow: hidden;
-    background: #000; color: #fff;
-    font-family: 'ALS Hauss', Helvetica, Arial, sans-serif;
-    font-weight: 400;
+    width:1920px; height:1080px; overflow:hidden; position:relative;
+    background:#000; color:#fff;
+    font-family:'ALS Hauss', Helvetica, Arial, sans-serif; font-weight:400;
   }
+  /* Сквозные шапка и подвал — одинаковые во всех раундах */
+  .top, .bot { position:absolute; left:64px; right:64px; display:flex; justify-content:space-between; align-items:center; z-index:5; }
+  .top { top:48px; }
+  .bot { bottom:48px; font-size:18px; color:#AEB1B7; }
+  .brand { font-size:22px; font-weight:500; letter-spacing:-0.02em; }
+  .plus { font-size:40px; font-weight:500; color:#1DAFF7; letter-spacing:-0.04em; }
+  .nav { display:flex; gap:36px; font-size:18px; color:#AEB1B7; }
+  .nav b { color:#1DAFF7; font-weight:500; }
 
-  body { padding: 64px; display: grid; grid-template-rows: auto 1fr; row-gap: 48px; }
-  header { display: flex; justify-content: space-between; align-items: baseline; }
-  h1 { font-size: 136px; font-weight: 500; line-height: 0.85; letter-spacing: -0.05em; }
-  h1 em { font-style: normal; color: #1DAFF7; }
-  .plus { font-size: 56px; font-weight: 500; color: #1DAFF7; letter-spacing: -0.04em; }
-  .grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 24px; }
-  .cell { background: #111; padding: 40px; display: flex; flex-direction: column; justify-content: flex-end; }
-  .cell.tall { grid-row: span 2; }
-  .cell.accent { background: #1DAFF7; color: #000; }
-  .cell .k { font-size: 20px; color: #AEB1B7; margin-bottom: 16px; }
-  .cell.accent .k { color: #000; opacity: .6; }
-  .cell .v { font-size: 56px; font-weight: 500; line-height: 0.95; letter-spacing: -0.03em; }
-  .cell.tall .v { font-size: 92px; }
+  .ghost { position:absolute; bottom:-120px; right:-80px; font-size:520px; font-weight:500;
+           line-height:0.8; letter-spacing:-0.06em; color:#0d0d0d; z-index:0; }
+  .halo { position:absolute; top:-180px; left:-180px; width:620px; height:620px; border-radius:50%;
+          background:#1DAFF7; opacity:.14; z-index:1; }
+  h1 { position:absolute; top:190px; left:64px; z-index:3;
+       font-size:150px; font-weight:500; line-height:0.84; letter-spacing:-0.05em; }
+  h1 em { font-style:normal; color:#1DAFF7; }
+  .grid { position:absolute; top:560px; left:64px; right:64px; z-index:3;
+          display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .cell { background:#111; padding:32px; min-height:260px; display:flex; flex-direction:column; justify-content:space-between; }
+  .cell .k { font-size:17px; color:#AEB1B7; }
+  .cell .v { font-size:52px; font-weight:500; letter-spacing:-0.03em; line-height:1; }
+  .cell.wide { grid-column:span 2; }
+  .tag { position:absolute; top:470px; right:180px; z-index:6; transform:rotate(-6deg);
+         background:#fff; color:#000; padding:18px 30px; font-size:26px; font-weight:500; }
 </style>
 </head>
 <body>
-
-  <header>
-    <h1>Финал<br><em>четырёх</em></h1>
+  <div class="top">
+    <div class="brand">Code in the Dark</div>
+    <div class="nav"><b>Финал</b><span>Итоги</span><span></span></div>
     <div class="plus">+1</div>
-  </header>
+  </div>
+
+  <div class="halo"></div>
+  <div class="ghost">01</div>
+  <h1>Финал<br><em>четырёх</em></h1>
+  <div class="tag">Победитель один</div>
   <div class="grid">
-    <div class="cell tall"><div class="k">Осталось</div><div class="v">15:00</div></div>
-    <div class="cell accent"><div class="k">Раунд</div><div class="v">Финал</div></div>
+    <div class="cell wide"><div class="k">Осталось</div><div class="v">15:00</div></div>
     <div class="cell"><div class="k">Голосует</div><div class="v">Зал</div></div>
     <div class="cell"><div class="k">Превью</div><div class="v">Нет</div></div>
-    <div class="cell"><div class="k">Победитель</div><div class="v">Один</div></div>
+  </div>
+  <div class="bot">
+    <span>Импульс 2026</span>
+    <span>Финал</span>
+    <span>19 ноября</span>
   </div>
 </body>
 </html>

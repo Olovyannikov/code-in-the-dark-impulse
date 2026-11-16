@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Импульс 2026 — терминал</title>
+<style>
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Black.woff2') format('woff2'); font-weight:900; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:1920px; height:1080px; overflow:hidden; position:relative;
+         background:#000; color:#fff; font-family:'ALS Hauss', Helvetica, Arial, sans-serif; }
+
+  body { font-family:'Courier New', monospace; }
+  .scan { position:absolute; inset:0; z-index:1; pointer-events:none;
+          background:repeating-linear-gradient(to bottom, rgba(255,255,255,.035) 0 1px, transparent 1px 3px); }
+  .win { position:absolute; top:140px; left:160px; width:1600px; height:800px; background:#0a0a0a;
+         border:1px solid #1DAFF7; z-index:2; }
+  .bar { height:52px; background:#111; border-bottom:1px solid #1DAFF7; display:flex; align-items:center; gap:10px; padding:0 20px; }
+  .dot { width:13px; height:13px; border-radius:50%; background:#333; }
+  .dot.on { background:#1DAFF7; }
+  .bar .name { margin-left:16px; font-size:16px; color:#AEB1B7; }
+  .body { padding:36px 40px; font-size:26px; line-height:1.75; }
+  .p { color:#1DAFF7; }
+  .c { color:#AEB1B7; }
+  .cursor { display:inline-block; width:16px; height:28px; background:#1DAFF7; vertical-align:-4px; }
+  .float { position:absolute; top:96px; right:120px; z-index:5; transform:rotate(5deg);
+           background:#1DAFF7; color:#000; padding:16px 24px; font-size:22px; font-weight:bold;
+           font-family:'ALS Hauss', sans-serif; }
+  .foot { position:absolute; bottom:56px; left:160px; right:160px; display:flex; justify-content:space-between;
+          font-size:18px; color:#AEB1B7; z-index:3; }
+</style>
+</head>
+<body>
+
+  <div class="win">
+    <div class="bar"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><span class="name">impulse — code-in-the-dark — 80×24</span></div>
+    <div class="body">
+      <div><span class="p">$</span> ./start --round 3 --blind</div>
+      <div class="c">&gt; участников: 4</div>
+      <div class="c">&gt; превью: отключено</div>
+      <div class="c">&gt; devtools: отключено</div>
+      <div class="c">&gt; таймер: 10:00</div>
+      <div><span class="p">$</span> <span class="cursor"></span></div>
+    </div>
+  </div>
+  <div class="float">LIVE</div>
+  <div class="foot"><span>Импульс 2026</span><span>19 ноября</span></div>
+</body>
+</html>

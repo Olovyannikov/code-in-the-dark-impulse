@@ -12,6 +12,8 @@ DEST="${1:-}"
 rounds=()
 for dir in "$ROOT"/mockups/*/; do
   name="$(basename "$dir")"
+  # variants/ — альтернативные макеты на выбор, в раунды не идут
+  [ "$name" = "variants" ] && continue
   [ -f "$dir/reference.png" ] || { echo "пропуск $name: нет reference.png"; continue; }
   "$ROOT/editor/build-bundle.sh" "$name" > /dev/null
   rounds+=("$name")

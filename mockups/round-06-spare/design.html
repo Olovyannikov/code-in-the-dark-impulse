@@ -4,39 +4,48 @@
 <meta charset="utf-8">
 <title>Импульс 2026 — цитата</title>
 <style>
-  @font-face {
-    font-family: 'ALS Hauss';
-    src: url('assets/fonts/ALSHauss-Regular.woff2') format('woff2');
-    font-weight: 400; font-display: block;
-  }
-  @font-face {
-    font-family: 'ALS Hauss';
-    src: url('assets/fonts/ALSHauss-Medium.woff2') format('woff2');
-    font-weight: 500; font-display: block;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    width: 1920px; height: 1080px; overflow: hidden;
-    background: #000; color: #fff;
-    font-family: 'ALS Hauss', Helvetica, Arial, sans-serif;
-    font-weight: 400;
+    width:1920px; height:1080px; overflow:hidden; position:relative;
+    background:#000; color:#fff;
+    font-family:'ALS Hauss', Helvetica, Arial, sans-serif; font-weight:400;
   }
+  /* Сквозные шапка и подвал — одинаковые во всех раундах */
+  .top, .bot { position:absolute; left:64px; right:64px; display:flex; justify-content:space-between; align-items:center; z-index:5; }
+  .top { top:48px; }
+  .bot { bottom:48px; font-size:18px; color:#AEB1B7; }
+  .brand { font-size:22px; font-weight:500; letter-spacing:-0.02em; }
+  .plus { font-size:40px; font-weight:500; color:#1DAFF7; letter-spacing:-0.04em; }
+  .nav { display:flex; gap:36px; font-size:18px; color:#AEB1B7; }
+  .nav b { color:#1DAFF7; font-weight:500; }
 
-  body { display: flex; flex-direction: column; justify-content: center; padding: 80px 120px; }
-  .quote-mark { font-size: 300px; font-weight: 500; line-height: 0.6; color: #1DAFF7; }
-  blockquote { font-size: 76px; font-weight: 500; line-height: 1.05; letter-spacing: -0.03em; max-width: 1400px; margin-top: 24px; }
-  .sign { margin-top: 56px; display: flex; align-items: center; gap: 24px; }
-  .rule { width: 120px; height: 3px; background: #1DAFF7; }
-  .who { font-size: 26px; color: #AEB1B7; }
+  .mark { position:absolute; top:60px; left:40px; font-size:760px; font-weight:500;
+          line-height:0.7; color:#101010; z-index:0; }
+  .edge { position:absolute; top:0; right:0; width:26px; height:1080px; background:#1DAFF7; z-index:2; }
+  blockquote { position:absolute; top:330px; left:260px; width:1300px; z-index:3;
+               font-size:86px; font-weight:500; line-height:1.04; letter-spacing:-0.035em; }
+  blockquote em { font-style:normal; color:#1DAFF7; }
+  .sign { position:absolute; top:760px; left:264px; z-index:3; transform:rotate(-3deg);
+          background:#111; padding:20px 28px; font-size:22px; color:#AEB1B7; }
 </style>
 </head>
 <body>
+  <div class="top">
+    <div class="brand">Code in the Dark</div>
+    <div class="nav"><b>Запасной</b><span></span><span></span></div>
+    <div class="plus">+1</div>
+  </div>
 
-  <div class="quote-mark">&laquo;</div>
-  <blockquote>Ты думал, что знаешь фронтенд.<br>Проверим это без превью.</blockquote>
-  <div class="sign">
-    <div class="rule"></div>
-    <div class="who">Code in the Dark &middot; Импульс 2026</div>
+  <div class="mark">&laquo;</div>
+  <div class="edge"></div>
+  <blockquote>Десять минут,<br>ноль превью<br>и <em>весь зал</em> в судьях.</blockquote>
+  <div class="sign">Code in the Dark · Импульс 2026</div>
+  <div class="bot">
+    <span>Импульс 2026</span>
+    <span>Запасной</span>
+    <span>19 ноября</span>
   </div>
 </body>
 </html>
