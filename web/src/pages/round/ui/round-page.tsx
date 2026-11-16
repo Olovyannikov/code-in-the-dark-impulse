@@ -1,10 +1,20 @@
-import { Container, Stack, Title } from '@mantine/core';
+import { Container, Stack, Text } from '@mantine/core';
+import { useUnit } from 'effector-react';
+
+import { routes } from '@/shared/routes';
+import { RoundRunner } from '@/widgets/round-runner';
 
 export function RoundPage() {
+  const onOpenBracket = useUnit(routes.bracket.open);
+
   return (
-    <Container size="lg" py="xl">
+    <Container size="md" py="xl">
       <Stack gap="xl">
-        <Title order={1}>Раунд</Title>
+        <Text style={{ cursor: 'pointer' }} c="dimmed" onClick={() => onOpenBracket()}>
+          ← К сетке
+        </Text>
+
+        <RoundRunner />
       </Stack>
     </Container>
   );
