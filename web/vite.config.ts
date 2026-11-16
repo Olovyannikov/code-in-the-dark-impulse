@@ -4,6 +4,8 @@ import babel from 'vite-plugin-babel';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  // Проектные GitHub Pages живут в подпути /<repo>/
+  base: process.env.GITHUB_PAGES === 'true' ? '/code-in-the-dark-impulse/' : '/',
   plugins: [
     react(),
     // @vitejs/plugin-react 6 перешёл на oxc и больше не принимает babel-опции,
@@ -17,7 +19,10 @@ export default defineConfig({
         babelrc: false,
         configFile: false,
         parserOpts: { plugins: ['typescript'] },
-        plugins: ['effector/babel-plugin'],
+        plugins: [
+          // factories: без этого юниты внутри createModel теряют уникальные sid
+          ['effector/babel-plugin', { factories: ['@/shared/lib/model'] }],
+        ],
       },
     }),
   ],

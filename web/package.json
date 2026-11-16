@@ -11,9 +11,11 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@effector/reflect": "^10.1.1",
     "@mantine/core": "^9.8.1",
     "@mantine/hooks": "^9.8.1",
     "@withease/contracts": "^1.1.0",
+    "@withease/factories": "^1.0.5",
     "atomic-router": "^0.12.0",
     "effector": "^23.4.4",
     "effector-action": "^1.2.2",
