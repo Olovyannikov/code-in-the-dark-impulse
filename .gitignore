@@ -4,3 +4,4 @@ assets/fonts/*.otf
 node_modules/
 dist/
 .superpowers/
+bundles/
