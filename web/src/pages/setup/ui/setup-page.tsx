@@ -1,4 +1,4 @@
-import { Container, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { useUnit } from 'effector-react';
 
 import { TournamentModel } from '@/entities/tournament';
@@ -24,15 +24,7 @@ export function SetupPage() {
 
         <Group justify="space-between">
           <SeedButton />
-          {seeded && (
-            <Text
-              c="impulse"
-              style={{ cursor: 'pointer' }}
-              onClick={() => onOpenBracket()}
-            >
-              К сетке →
-            </Text>
-          )}
+          {seeded && <Button onClick={() => onOpenBracket()}>К сетке →</Button>}
         </Group>
       </Stack>
     </Container>

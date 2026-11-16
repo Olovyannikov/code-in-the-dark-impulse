@@ -1,4 +1,4 @@
-import { Card, Container, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Card, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { useUnit } from 'effector-react';
 
 import { TournamentModel } from '@/entities/tournament';
@@ -19,11 +19,13 @@ export function ResultsPage() {
   return (
     <Container size="sm" py="xl">
       <Stack gap="xl">
-        <Text style={{ cursor: 'pointer' }} c="dimmed" onClick={() => onOpenBracket()}>
-          ← К сетке
-        </Text>
+        <Group>
+          <Button variant="subtle" color="gray" px={0} onClick={() => onOpenBracket()}>
+            ← К сетке
+          </Button>
+        </Group>
 
-        <Card withBorder padding="xl">
+        <Card padding="xl" radius="sm" bg="#0b0b0b" style={{ border: '1px solid #262626' }}>
           <Stack align="center" gap="xs">
             <Text c="dimmed" tt="uppercase" size="sm">
               Чемпион

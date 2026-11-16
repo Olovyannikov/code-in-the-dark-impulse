@@ -28,22 +28,27 @@ export function RoundRunner() {
 
   return (
     <Stack gap="xl">
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" align="center" wrap="nowrap">
         <Title order={2}>{round.kind === 'final' ? 'Финал' : `Отбор ${round.order + 1}`}</Title>
         <RoundStatusBadge status={round.status} />
       </Group>
 
-      <Card withBorder padding="xl">
-        <Stack align="center" gap="xs">
+      <Card
+        padding="xl"
+        radius="sm"
+        bg="#0b0b0b"
+        style={{ border: '1px solid #262626' }}
+      >
+        <Stack align="center" gap={4}>
           <Text
-            ff="monospace"
-            fw={700}
-            style={{ fontSize: 'clamp(72px, 18vw, 180px)', lineHeight: 1 }}
+            className="tnum"
+            fw={500}
+            style={{ fontSize: 'clamp(72px, 16vw, 168px)', lineHeight: 1, letterSpacing: '-0.04em' }}
             c={round.status === 'timeup' ? 'orange' : undefined}
           >
             {formatMmSs(remaining)}
           </Text>
-          <Text c="dimmed">
+          <Text c="dimmed" className="tnum">
             {round.status === 'pending'
               ? `Запланировано ${formatMmSs(round.durationMs)}`
               : `Из ${formatMmSs(round.durationMs)}`}

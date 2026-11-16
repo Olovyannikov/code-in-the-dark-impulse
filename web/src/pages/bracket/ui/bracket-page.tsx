@@ -1,4 +1,4 @@
-import { Container, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Container, Group, Stack, Title } from '@mantine/core';
 import { useUnit } from 'effector-react';
 
 import { TournamentModel } from '@/entities/tournament';
@@ -14,27 +14,20 @@ export function BracketPage() {
   });
 
   return (
-    <Container size="xl" py="xl">
+    <Container size={1500} py="xl">
       <Stack gap="xl">
-        <Group justify="space-between" align="flex-end">
+        <Group justify="space-between" align="center" wrap="nowrap">
           <Title order={1}>Сетка</Title>
-          <Group>
-            <Text style={{ cursor: 'pointer' }} c="dimmed" onClick={() => onOpenSetup()}>
+          <Group gap="xs">
+            <Button variant="subtle" color="gray" onClick={() => onOpenSetup()}>
               ← Участники
-            </Text>
-            {championId && (
-              <Text style={{ cursor: 'pointer' }} c="impulse" onClick={() => onOpenResults()}>
-                Итоги →
-              </Text>
-            )}
+            </Button>
+            {championId && <Button onClick={() => onOpenResults()}>Итоги →</Button>}
+            <ResetTournament />
           </Group>
         </Group>
 
         <BracketBoard />
-
-        <Group justify="flex-end">
-          <ResetTournament />
-        </Group>
       </Stack>
     </Container>
   );

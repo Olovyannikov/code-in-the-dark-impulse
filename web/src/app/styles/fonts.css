@@ -17,3 +17,17 @@
   font-style: normal;
   font-display: swap;
 }
+
+/*
+ * В ALS Hauss есть лигатура, схлопывающая повторяющиеся цифры вокруг
+ * двоеточия: «10:00» отрисовывалось как «1:0», «09:05» как «0:5».
+ * Для инструмента, вся суть которого в минутах, это недопустимо.
+ */
+:root {
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}

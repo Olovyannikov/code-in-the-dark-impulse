@@ -3,6 +3,7 @@ import { useUnit } from 'effector-react';
 import { useState } from 'react';
 
 import { TournamentModel } from '@/entities/tournament';
+import { CrossIcon } from '@/shared/ui';
 
 import { ParticipantsModel } from '../model/participants.model';
 
@@ -30,7 +31,7 @@ export function ParticipantsEditor() {
 
   return (
     <Stack gap="lg">
-      <Group align="flex-end">
+      <Group align="flex-end" gap="sm" wrap="nowrap">
         <TextInput
           label="Имя участника"
           placeholder="Аня"
@@ -89,7 +90,7 @@ export function ParticipantsEditor() {
                     aria-label={`Удалить ${person.name}`}
                     onClick={() => onRemove(person.id)}
                   >
-                    ✕
+                    <CrossIcon />
                   </ActionIcon>
                 </Table.Td>
               </Table.Tr>

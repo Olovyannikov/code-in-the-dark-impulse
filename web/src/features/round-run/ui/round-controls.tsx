@@ -42,12 +42,13 @@ export function RoundControls({ round }: Props) {
   const isLive = round.status === 'running' || round.status === 'paused';
 
   return (
-    <Group>
+    <Group align="flex-end" gap="sm">
       {/* Регламент разрешает резать отборы до старта — например до 8 минут. */}
       {round.status === 'pending' && (
         <NumberInput
           label="Минут на раунд"
-          w={150}
+          size="lg"
+          w={160}
           min={1}
           max={60}
           value={Math.round(round.durationMs / MINUTE)}

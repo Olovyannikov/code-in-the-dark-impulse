@@ -83,3 +83,21 @@ shared/     config, routes, lib (shuffle, time, create-model)
 ```
 
 Модели — namespace-фабрики `createModel` (`shared/lib/create-model`) с полем `viewModel` для `reflect`.
+
+### В ALS Hauss сломаны цифры времени
+
+У шрифта есть лигатура, схлопывающая повторяющиеся цифры вокруг двоеточия:
+`10:00` отрисовывается как `1:0`, `09:05` как `0:5`, `00:00` как `0:0`.
+Воспроизводится в чистом HTML, к Mantine и React отношения не имеет.
+
+Лечится в `app/styles/fonts.css`:
+
+```css
+:root {
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+}
+```
+
+Если будешь добавлять новые места с временем — классом `.tnum`
+включай ещё и `tabular-nums`, иначе цифры «дышат» при каждом тике.

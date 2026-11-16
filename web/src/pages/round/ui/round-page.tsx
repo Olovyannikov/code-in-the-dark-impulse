@@ -1,4 +1,4 @@
-import { Container, Stack, Text } from '@mantine/core';
+import { Button, Container, Group, Stack } from '@mantine/core';
 import { useUnit } from 'effector-react';
 
 import { routes } from '@/shared/routes';
@@ -10,9 +10,11 @@ export function RoundPage() {
   return (
     <Container size="md" py="xl">
       <Stack gap="xl">
-        <Text style={{ cursor: 'pointer' }} c="dimmed" onClick={() => onOpenBracket()}>
-          ← К сетке
-        </Text>
+        <Group>
+          <Button variant="subtle" color="gray" px={0} onClick={() => onOpenBracket()}>
+            ← К сетке
+          </Button>
+        </Group>
 
         <RoundRunner />
       </Stack>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import type { Round } from '@/entities/round';
 import { TournamentModel } from '@/entities/tournament';
+import { CrossIcon } from '@/shared/ui';
 
 import { RosterModel } from '../model/roster.model';
 
@@ -29,11 +30,14 @@ export function RosterEditor({ round }: Props) {
   const otherHeats = heats.filter((heat) => heat.id !== round.id && heat.status === 'pending');
 
   return (
-    <Stack gap="sm">
+    <Stack gap="sm" maw={460}>
       <Text fw={500}>Состав</Text>
 
-      {round.participantIds.map((id) => (
-        <Group key={id} gap="xs">
+      {round.participantIds.map((id, index) => (
+        <Group key={id} gap="sm" wrap="nowrap">
+          <Text c="dimmed" w={20} className="tnum">
+            {index + 1}
+          </Text>
           <Text style={{ flex: 1 }}>{nameOf(id)}</Text>
 
           {otherHeats.length > 0 && (
@@ -56,7 +60,7 @@ export function RosterEditor({ round }: Props) {
             aria-label={`Убрать ${nameOf(id)} из раунда`}
             onClick={() => onRemove({ participantId: id, roundId: round.id })}
           >
-            ✕
+            <CrossIcon />
           </ActionIcon>
         </Group>
       ))}

@@ -1,0 +1,108 @@
+/*
+ * Турнирная сетка как дерево: колонка отборов, колонка соединителей,
+ * финал справа по центру. Соединители рисуются бордерами в ячейках,
+ * которые делят строки с отборами, — поэтому линии всегда попадают
+ * в вертикальный центр своей карточки при любом числе отборов.
+ */
+.tree {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px minmax(0, 0.9fr);
+  column-gap: 0;
+  align-items: stretch;
+}
+
+.heatCell {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.link {
+  grid-column: 2;
+  position: relative;
+}
+
+/* Горизонтальный отвод от карточки к хребту */
+.link::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 50%;
+  border-top: 2px solid var(--mantine-color-impulse-6);
+}
+
+/* Хребет: у первой строки — вниз от центра, у последней — вверх, у средних — насквозь */
+.link::after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 1px);
+  width: 2px;
+  background: var(--mantine-color-impulse-6);
+  top: 0;
+  bottom: 0;
+}
+
+.link.first::after { top: 50%; }
+.link.last::after { bottom: 50%; }
+.link.only::after { display: none; }
+
+.finalCell {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 55px;
+}
+
+/* Отвод от хребта к финалу */
+.finalCell::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 55px;
+  border-top: 2px solid var(--mantine-color-impulse-6);
+}
+
+.card {
+  width: 100%;
+  background: #0b0b0b;
+  border: 1px solid #262626;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--mantine-color-impulse-6);
+  outline: none;
+}
+
+.card[data-live='true'] {
+  border-color: var(--mantine-color-impulse-6);
+}
+
+.card[data-done='true'] {
+  border-color: #2f6b45;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 22px;
+}
+
+.seat {
+  width: 20px;
+  flex: none;
+  color: var(--mantine-color-dimmed);
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  border: 1px dashed #262626;
+  background: transparent;
+}
