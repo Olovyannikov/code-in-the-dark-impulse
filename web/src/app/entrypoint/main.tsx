@@ -6,7 +6,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { AppProvider } from '@/app/providers/app-provider';
-import { AppRouterProvider, RoutesView } from '@/app/providers/router-provider';
+import { AppRouterProvider, AppScreen } from '@/app/providers/router-provider';
 
 import { appStarted } from '../model/app.model';
 
@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
     <Provider value={scope}>
       <AppProvider>
         <AppRouterProvider>
-          <RoutesView />
+          <AppScreen />
         </AppRouterProvider>
       </AppProvider>
     </Provider>

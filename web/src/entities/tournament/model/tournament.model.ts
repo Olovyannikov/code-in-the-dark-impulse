@@ -28,6 +28,8 @@ export const TournamentModel = createModel(() => {
   const storageFailed = createEvent<Fail<Error>>();
   /** Хранилище отработало чтение: только теперь можно решать, какой экран открыть. */
   const storagePickupSettled = createEvent();
+  /** Оператор выбрал начать турнир с нуля поверх повреждённых данных. */
+  const brokenStorageDiscarded = createEvent();
 
   /**
    * При ошибке разбора JSON адаптеру нечего положить в Fail.value,
@@ -41,7 +43,9 @@ export const TournamentModel = createModel(() => {
     .on(tournamentReplaced, (_, next) => next)
     .on(storageRestored, (_, restored) => restored);
 
-  const $storageBroken = createStore(false).on(storageFailed, () => true);
+  const $storageBroken = createStore(false)
+    .on(storageFailed, () => true)
+    .reset(brokenStorageDiscarded);
 
   const $rawBrokenPayload = createStore<string | null>(null).on(
     readRawStorageFx.doneData,
@@ -65,6 +69,12 @@ export const TournamentModel = createModel(() => {
   const $championId = $rounds.map(findChampionId);
 
   sample({ clock: storageFailed, target: readRawStorageFx });
+
+  sample({
+    clock: brokenStorageDiscarded,
+    fn: () => EMPTY_TOURNAMENT,
+    target: tournamentReplaced,
+  });
 
   // Пока хранилище признано битым, в него не пишем: оператор ещё может выгрузить сырые данные.
   sample({
@@ -94,6 +104,7 @@ export const TournamentModel = createModel(() => {
     tournamentReplaced,
     storagePickedUp,
     storagePickupSettled,
+    brokenStorageDiscarded,
     $tournament,
     $storageBroken,
     $rawBrokenPayload,

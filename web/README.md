@@ -1,32 +1,85 @@
-# React + TypeScript + Vite
+# Турнирная сетка Code in the Dark
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Инструмент оператора на один вечер: ввести участников, перемешать, построить сетку, провести раунды с таймером, отметить победителей, получить чемпиона.
 
-Currently, two official plugins are available:
+Работает офлайн, без бэкенда. Всё состояние живёт в `localStorage`, поэтому случайный `F5` посреди турнира ничего не ломает.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Запуск
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm install
+npm run dev      # разработка
+npm test         # тесты
+npm run lint     # eslint
+npx steiger src  # проверка границ FSD
+npm run build    # сборка
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Стек
+
+| Что | Чем | Почему |
+|---|---|---|
+| Сборка | Vite + React 19 + TypeScript | — |
+| UI | Mantine 9 | тёмная тема из коробки, палитра «Импульс 2026» в `app/providers` |
+| Логика | Effector 23 | всё состояние и все правила |
+| Биндинг | `effector-react`, `@effector/reflect` | — |
+| Операторы | `patronum` | `interval`, `once`, `not` |
+| Ветвление | `ts-pattern` | исчерпывающий разбор статусов раунда |
+| Хранение | `effector-storage/local` | с контрактом и синхронизацией вкладок |
+| Валидация | `@withease/contracts` | localStorage — недоверенный источник |
+| Роутинг | `atomic-router` | экраны как часть Effector-графа |
+| Тесты | Vitest + `fork`/`allSettled` | — |
+
+## Решения, которые стоит знать
+
+### Таймер хранит `deadlineAt`, а не счётчик
+
+Остаток всегда вычисляется как `deadlineAt - Date.now()`, тик раз в секунду нужен только для перерисовки. Браузер троттлит `setInterval` в фоновой вкладке, и счётчик-накопитель отстал бы на минуты за десятиминутный раунд.
+
+Верхняя граница остатка — `durationMs`: защита от скачка системных часов назад. Нижняя — ноль: защита от сна ноутбука, после которого дедлайн давно в прошлом. См. `features/round-run/lib/timer.ts`.
+
+### Переход в `timeup` — следствие тика
+
+Отдельного таймера на истечение нет. Два источника времени неизбежно разъезжаются при сворачивании вкладки, один — нет.
+
+### Чемпион не хранится полем
+
+Это производное от победителя финального раунда. Отдельное поле рано или поздно рассинхронизировалось бы с сеткой.
+
+### Драйвер часов вынесен из модели
+
+`patronum/interval` держит незавершённый эффект, и `allSettled` по модели ждал бы его вечно. Поэтому интервал живёт в `TickerModel`, который поднимается из `appStarted`, а `RoundRunModel` принимает готовое событие `ticked`.
+
+### Производные сторы объявляются до `persist`
+
+Если создать их после вызова `persist`, тот зафиксирует граф без них, и `scope.getState` начнёт отдавать по ним чужие значения. Поймано тестом «appStarted поднимает сохранённый турнир».
+
+### Порядок старта строгий
+
+`appStarted` → подъём хранилища → создание истории → `router.initialized` → выбор стартового экрана.
+
+Если решать, какой экран открыть, сразу по `appStarted`, роутер прочитает состояние до восстановления турнира, и оператор после `F5` увидит ввод участников поверх готовой сетки.
+
+### Пока хранилище битое, в него не пишем
+
+`persist` получает отфильтрованное событие-источник. Иначе первое же действие оператора затёрло бы данные, которые он ещё может выгрузить файлом с экрана восстановления.
+
+### Чего здесь нет и почему
+
+- **`effector-refetch` и Farfetched.** Сети нет: `retry`, `cache`, `concurrency` и `timeout` не к чему приложить.
+- **IndexedDB.** Весь турнир — 16 имён и 5 раундов, это килобайты. Готового адаптера в `effector-storage` 8 нет, пришлось бы строить поверх `async-storage` без выигрыша.
+
+## Структура
+
+Feature-Sliced Design, границы проверяет Steiger.
+
+```
+app/        старт, провайдеры, роутер
+pages/      setup, bracket, round, results, broken-storage
+widgets/    bracket-board, round-runner
+features/   действия оператора: жеребьёвка, раунд, победитель, составы, сброс
+entities/   participant, round, tournament
+shared/     config, routes, lib (shuffle, time, create-model)
+```
+
+Модели — namespace-фабрики `createModel` (`shared/lib/create-model`) с полем `viewModel` для `reflect`.
