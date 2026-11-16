@@ -6,7 +6,10 @@
  */
 .tree {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 110px minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) 88px minmax(0, 0.78fr);
+  /* Равные строки: отборы бывают по 2, 3 и 4 человека, и без этого
+     карточки разной высоты ломают ритм, а отводы расползаются. */
+  grid-auto-rows: 1fr;
   column-gap: 0;
   align-items: stretch;
 }
@@ -14,8 +17,8 @@
 .heatCell {
   grid-column: 1;
   display: flex;
-  align-items: center;
-  padding: 8px 0;
+  align-items: stretch;
+  padding: 6px 0;
 }
 
 .link {
@@ -53,7 +56,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  padding-left: 55px;
+  padding-left: 44px;
 }
 
 /* Отвод от хребта к финалу */
@@ -62,13 +65,15 @@
   position: absolute;
   top: 50%;
   left: 0;
-  width: 55px;
+  width: 44px;
   border-top: 2px solid var(--mantine-color-impulse-6);
 }
 
 .card {
   width: 100%;
   background: #0b0b0b;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #262626;
   cursor: pointer;
   transition: border-color 120ms ease;

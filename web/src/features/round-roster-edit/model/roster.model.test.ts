@@ -120,3 +120,50 @@ test('повторное добавление того же человека н�
 
   expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b']);
 });
+
+test('нового человека можно вписать прямо в раунд: он появляется и в списке участников', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'])]);
+
+  await allSettled(RosterModel.latecomerAdded, {
+    scope,
+    params: { roundId: 'h0', name: 'Тимур' },
+  });
+
+  const participants = scope.getState(TournamentModel.$participants);
+  const added = participants.find((person) => person.name === 'Тимур');
+  expect(added).toBeDefined();
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b', added!.id]);
+});
+
+test('если такой человек уже заведён и никуда не посажен — сажаем его, а не плодим дубль', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'])]);
+
+  await allSettled(RosterModel.latecomerAdded, {
+    scope,
+    params: { roundId: 'h0', name: 'C' },
+  });
+
+  expect(scope.getState(TournamentModel.$participants)).toHaveLength(4);
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b', 'c']);
+});
+
+test('пустое имя ничего не добавляет', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'])]);
+
+  await allSettled(RosterModel.latecomerAdded, { scope, params: { roundId: 'h0', name: '  ' } });
+
+  expect(scope.getState(TournamentModel.$participants)).toHaveLength(4);
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b']);
+});
+
+test('в идущий раунд вписать нового нельзя', async () => {
+  const scope = scopeWith([heat('h0', 0, ['a', 'b'], 'running')]);
+
+  await allSettled(RosterModel.latecomerAdded, {
+    scope,
+    params: { roundId: 'h0', name: 'Тимур' },
+  });
+
+  expect(scope.getState(TournamentModel.$participants)).toHaveLength(4);
+  expect(roundById(scope, 'h0')?.participantIds).toEqual(['a', 'b']);
+});

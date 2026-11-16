@@ -6,6 +6,7 @@ import type { Participant } from '@/entities/participant';
 import type { Round } from '@/entities/round';
 import { RoundStatusBadge } from '@/entities/round';
 import { TournamentModel } from '@/entities/tournament';
+import { HEAT_SIZE } from '@/shared/config';
 import { formatMmSs } from '@/shared/lib/time';
 import { routes } from '@/shared/routes';
 
@@ -22,6 +23,13 @@ function RoundCard({ round, title, participants, onOpen }: CardProps) {
   const nameOf = (id: string) => participants.find((person) => person.id === id)?.name ?? '—';
   const isLive = round.status === 'running' || round.status === 'paused';
 
+  // Свободные места показываем явно: оператор видит, куда сажать опоздавшего.
+  const freeSeats = Math.max(HEAT_SIZE - round.participantIds.length, 0);
+  const seats: (string | null)[] =
+    round.status === 'pending'
+      ? [...round.participantIds, ...Array<null>(freeSeats).fill(null)]
+      : round.participantIds;
+
   return (
     <Card
       className={classes.card}
@@ -34,7 +42,7 @@ function RoundCard({ round, title, participants, onOpen }: CardProps) {
       onClick={() => onOpen({ roundId: round.id })}
       onKeyDown={(event) => event.key === 'Enter' && onOpen({ roundId: round.id })}
     >
-      <Stack gap="xs">
+      <Stack gap="xs" style={{ flex: 1 }}>
         <Group justify="space-between" wrap="nowrap" align="center">
           <Text fw={500}>{title}</Text>
           <Group gap="xs" wrap="nowrap" align="center">
@@ -45,16 +53,22 @@ function RoundCard({ round, title, participants, onOpen }: CardProps) {
           </Group>
         </Group>
 
-        <Stack gap={2}>
-          {round.participantIds.map((id, index) => (
-            <div key={id} className={classes.row}>
+        <Stack gap={2} style={{ flex: 1 }}>
+          {seats.map((id, index) => (
+            <div key={id ?? `free-${index}`} className={classes.row}>
               <Text size="sm" className={classes.seat}>
                 {index + 1}
               </Text>
-              <Text size="sm" style={{ flex: 1 }}>
-                {nameOf(id)}
-              </Text>
-              {round.winnerId === id && (
+              {id === null ? (
+                <Text size="sm" c="dimmed" fs="italic" style={{ flex: 1 }}>
+                  свободно
+                </Text>
+              ) : (
+                <Text size="sm" style={{ flex: 1 }}>
+                  {nameOf(id)}
+                </Text>
+              )}
+              {id !== null && round.winnerId === id && (
                 <Badge size="sm" color="green" variant="light">
                   победитель
                 </Badge>

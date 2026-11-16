@@ -8,6 +8,7 @@ import { createModel } from '@/shared/lib/create-model';
 type Move = { participantId: string; toRoundId: string };
 type Removal = { participantId: string; roundId: string };
 type Addition = { participantId: string; roundId: string };
+type Latecomer = { roundId: string; name: string };
 
 /** Состав идущего раунда не трогаем: люди уже сидят за машинами. */
 const isEditable = (round: Round) => round.status === 'pending';
@@ -56,6 +57,32 @@ function addToRoster(tournament: Tournament, { participantId, roundId }: Additio
   };
 }
 
+/**
+ * Опоздавший с улицы: человека может не быть в турнире вовсе.
+ * Если такой уже заведён и нигде не сидит — сажаем его, а не плодим двойника.
+ */
+function addLatecomer(tournament: Tournament, { roundId, name }: Latecomer): Tournament {
+  const clean = name.trim().replace(/\s+/g, ' ');
+  if (clean.length === 0) return tournament;
+
+  const target = tournament.rounds.find((round) => round.id === roundId);
+  if (!target || !isEditable(target)) return tournament;
+
+  const seated = new Set(tournament.rounds.flatMap((round) => round.participantIds));
+  const free = tournament.participants.find(
+    (person) => person.name === clean && !seated.has(person.id),
+  );
+
+  const participant = free ?? { id: crypto.randomUUID(), name: clean };
+
+  return addToRoster(
+    free
+      ? tournament
+      : { ...tournament, participants: [...tournament.participants, participant] },
+    { participantId: participant.id, roundId },
+  );
+}
+
 function removeFromRoster(tournament: Tournament, { participantId, roundId }: Removal): Tournament {
   return {
     ...tournament,
@@ -75,6 +102,7 @@ export const RosterModel = createModel(() => {
   const rosterParticipantMoved = createEvent<Move>();
   const rosterParticipantRemoved = createEvent<Removal>();
   const rosterParticipantAdded = createEvent<Addition>();
+  const latecomerAdded = createEvent<Latecomer>();
 
   sample({
     clock: rosterParticipantMoved,
@@ -97,5 +125,17 @@ export const RosterModel = createModel(() => {
     target: TournamentModel.tournamentReplaced,
   });
 
-  return { rosterParticipantMoved, rosterParticipantRemoved, rosterParticipantAdded };
+  sample({
+    clock: latecomerAdded,
+    source: TournamentModel.$tournament,
+    fn: addLatecomer,
+    target: TournamentModel.tournamentReplaced,
+  });
+
+  return {
+    rosterParticipantMoved,
+    rosterParticipantRemoved,
+    rosterParticipantAdded,
+    latecomerAdded,
+  };
 });

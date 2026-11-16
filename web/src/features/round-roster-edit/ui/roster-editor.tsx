@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Select, Stack, Text } from '@mantine/core';
+import { ActionIcon, Autocomplete, Button, Group, Select, Stack, Text } from '@mantine/core';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
 
@@ -11,15 +11,15 @@ import { RosterModel } from '../model/roster.model';
 type Props = { round: Round };
 
 export function RosterEditor({ round }: Props) {
-  const { participants, heats, onMove, onRemove, onAdd } = useUnit({
+  const { participants, heats, onMove, onRemove, onAddLatecomer } = useUnit({
     participants: TournamentModel.$participants,
     heats: TournamentModel.$heats,
     onMove: RosterModel.rosterParticipantMoved,
     onRemove: RosterModel.rosterParticipantRemoved,
-    onAdd: RosterModel.rosterParticipantAdded,
+    onAddLatecomer: RosterModel.latecomerAdded,
   });
 
-  const [latecomer, setLatecomer] = useState<string | null>(null);
+  const [latecomer, setLatecomer] = useState('');
 
   if (round.status !== 'pending') return null;
 
@@ -28,6 +28,15 @@ export function RosterEditor({ round }: Props) {
   const seated = new Set(heats.flatMap((heat) => heat.participantIds));
   const unseated = participants.filter((person) => !seated.has(person.id));
   const otherHeats = heats.filter((heat) => heat.id !== round.id && heat.status === 'pending');
+
+  const typed = latecomer.trim().replace(/\s+/g, ' ');
+  const isKnown = unseated.some((person) => person.name === typed);
+
+  const submit = () => {
+    if (typed.length === 0) return;
+    onAddLatecomer({ roundId: round.id, name: typed });
+    setLatecomer('');
+  };
 
   return (
     <Stack gap="sm" maw={460}>
@@ -65,30 +74,21 @@ export function RosterEditor({ round }: Props) {
         </Group>
       ))}
 
-      {unseated.length > 0 && (
-        <Group gap="xs" align="flex-end">
-          <Select
-            size="xs"
-            w={220}
-            label="Опоздавший"
-            placeholder="Кого посадить"
-            value={latecomer}
-            data={unseated.map((person) => ({ value: person.id, label: person.name }))}
-            onChange={setLatecomer}
-          />
-          <Button
-            size="xs"
-            variant="default"
-            disabled={latecomer === null}
-            onClick={() => {
-              if (latecomer) onAdd({ participantId: latecomer, roundId: round.id });
-              setLatecomer(null);
-            }}
-          >
-            Добавить в раунд
-          </Button>
-        </Group>
-      )}
+      <Group gap="sm" align="flex-end" wrap="nowrap" mt="sm">
+        <Autocomplete
+          label="Посадить в раунд"
+          description="Можно выбрать из списка или вписать нового человека"
+          placeholder="Имя"
+          style={{ flex: 1 }}
+          value={latecomer}
+          data={unseated.map((person) => person.name)}
+          onChange={setLatecomer}
+          onKeyDown={(event) => event.key === 'Enter' && submit()}
+        />
+        <Button variant="default" disabled={latecomer.trim().length === 0} onClick={submit}>
+          {typed.length === 0 || isKnown ? 'Посадить' : 'Создать и посадить'}
+        </Button>
+      </Group>
     </Stack>
   );
 }
