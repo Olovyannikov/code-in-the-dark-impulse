@@ -6,6 +6,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { AppProvider } from '@/app/providers/app-provider';
+import { AppRouterProvider, RoutesView } from '@/app/providers/router-provider';
 
 import { appStarted } from '../model/app.model';
 
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider value={scope}>
       <AppProvider>
-        <div>Code in the Dark</div>
+        <AppRouterProvider>
+          <RoutesView />
+        </AppRouterProvider>
       </AppProvider>
     </Provider>
   </StrictMode>,

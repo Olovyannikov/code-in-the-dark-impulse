@@ -1,5 +1,5 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import type { Fail } from 'effector-storage/local';
+import type { Fail, Finally } from 'effector-storage/local';
 import { persist } from 'effector-storage/local';
 import { not } from 'patronum';
 
@@ -26,6 +26,8 @@ export const TournamentModel = createModel(() => {
   const storagePickedUp = createEvent();
   const storageRestored = createEvent<Tournament>();
   const storageFailed = createEvent<Fail<Error>>();
+  /** Хранилище отработало чтение: только теперь можно решать, какой экран открыть. */
+  const storagePickupSettled = createEvent();
 
   /**
    * При ошибке разбора JSON адаптеру нечего положить в Fail.value,
@@ -33,6 +35,7 @@ export const TournamentModel = createModel(() => {
    */
   const readRawStorageFx = createEffect(() => localStorage.getItem(STORAGE_KEY));
   const tournamentPersisted = createEvent<Tournament>();
+  const storageSettled = createEvent<Finally<Tournament, Error>>();
 
   const $tournament = createStore(EMPTY_TOURNAMENT)
     .on(tournamentReplaced, (_, next) => next)
@@ -44,6 +47,22 @@ export const TournamentModel = createModel(() => {
     readRawStorageFx.doneData,
     (_, raw) => raw,
   );
+
+  // Производные сторы объявляются ДО persist. Если создать их после,
+  // persist зафиксирует граф без них, и scope.getState начнёт отдавать
+  // по ним чужие значения — поймано тестом «appStarted поднимает турнир».
+  const $participants = $tournament.map((tournament) => tournament.participants);
+  const $rounds = $tournament.map((tournament) => tournament.rounds);
+  const $isSeeded = $tournament.map((tournament) => tournament.seededAt !== null);
+
+  const $heats = $rounds.map((rounds) =>
+    rounds.filter((round) => round.kind === 'heat').sort((a, b) => a.order - b.order),
+  );
+  const $finalRound = $rounds.map<Round | null>(
+    (rounds) => rounds.find((round) => round.kind === 'final') ?? null,
+  );
+  const $heatWinnerIds = $rounds.map(collectHeatWinners);
+  const $championId = $rounds.map(findChampionId);
 
   sample({ clock: storageFailed, target: readRawStorageFx });
 
@@ -61,25 +80,20 @@ export const TournamentModel = createModel(() => {
     contract: tournamentContract,
     pickup: storagePickedUp,
     fail: storageFailed,
+    finally: storageSettled,
     sync: true,
   });
 
-  const $participants = $tournament.map((tournament) => tournament.participants);
-  const $rounds = $tournament.map((tournament) => tournament.rounds);
-  const $isSeeded = $tournament.map((tournament) => tournament.seededAt !== null);
-
-  const $heats = $rounds.map((rounds) =>
-    rounds.filter((round) => round.kind === 'heat').sort((a, b) => a.order - b.order),
-  );
-  const $finalRound = $rounds.map<Round | null>(
-    (rounds) => rounds.find((round) => round.kind === 'final') ?? null,
-  );
-  const $heatWinnerIds = $rounds.map(collectHeatWinners);
-  const $championId = $rounds.map(findChampionId);
+  sample({
+    clock: storageSettled,
+    filter: ({ operation }) => operation === 'get',
+    target: storagePickupSettled,
+  });
 
   return {
     tournamentReplaced,
     storagePickedUp,
+    storagePickupSettled,
     $tournament,
     $storageBroken,
     $rawBrokenPayload,

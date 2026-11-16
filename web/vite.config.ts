@@ -19,10 +19,7 @@ export default defineConfig({
         babelrc: false,
         configFile: false,
         parserOpts: { plugins: ['typescript'] },
-        plugins: [
-          // factories: без этого юниты внутри createModel теряют уникальные sid
-          ['effector/babel-plugin', { factories: ['@/shared/lib/create-model'] }],
-        ],
+        plugins: ['effector/babel-plugin'],
       },
     }),
   ],
