@@ -1,4 +1,5 @@
 import '@mantine/core/styles.css';
+import '@/app/styles/fonts.css';
 
 import { allSettled, fork } from 'effector';
 import { Provider } from 'effector-react';
