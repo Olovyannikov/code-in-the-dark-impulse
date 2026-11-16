@@ -1,6 +1,11 @@
-assets/fonts/*.woff2
-assets/fonts/*.ttf
-assets/fonts/*.otf
+# Коммерческие шрифты в публичный репозиторий не кладём.
+# Раздаются участникам на флешке вместе с бандлом.
+*.woff2
+*.woff
+*.ttf
+*.otf
+*.eot
+
 node_modules/
 dist/
 .superpowers/
