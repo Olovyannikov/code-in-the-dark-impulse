@@ -36,8 +36,8 @@
 ### Task 1: Каркас проекта
 
 **Files:**
-- Create: `app/` (Vite-проект в подпапке репозитория), `app/package.json`, `app/vite.config.ts`, `app/tsconfig.json`, `app/eslint.config.js`, `app/steiger.config.ts`, `app/src/app/entrypoint/main.tsx`, `app/src/app/providers/app-provider.tsx`, `app/src/app/model/app.model.ts`
-- Test: `app/src/app/model/app.model.test.ts`
+- Create: `web/` (Vite-проект в подпапке репозитория), `web/package.json`, `web/vite.config.ts`, `web/tsconfig.json`, `web/eslint.config.js`, `web/steiger.config.ts`, `web/src/app/entrypoint/main.tsx`, `web/src/app/providers/app-provider.tsx`, `web/src/app/model/app.model.ts`
+- Test: `web/src/app/model/app.model.test.ts`
 
 **Interfaces:**
 - Produces: `appStarted: Event<void>` из `@/app/model/app.model`; алиас `@/*` → `src/*`
@@ -45,8 +45,8 @@
 - [ ] **Step 1: Создать Vite-проект и поставить зависимости**
 
 ```bash
-npm create vite@latest app -- --template react-ts
-cd app
+npm create vite@latest web -- --template react-ts
+cd web
 npm i effector effector-react patronum effector-action effector-storage @withease/contracts atomic-router @mantine/core @mantine/hooks
 npm i -D vitest @testing-library/react jsdom eslint-plugin-effector steiger @feature-sliced/steiger-plugin
 ```
@@ -90,7 +90,7 @@ Expected: всё зелёное
 - [ ] **Step 9: Commit**
 
 ```bash
-git add app && git commit -m "Каркас: Vite, Mantine, Effector, тесты, линтеры"
+git add web && git commit -m "Каркас: Vite, Mantine, Effector, тесты, линтеры"
 ```
 
 ---
@@ -98,8 +98,8 @@ git add app && git commit -m "Каркас: Vite, Mantine, Effector, тесты,
 ### Task 2: Доменные типы, контракты и конфигурация
 
 **Files:**
-- Create: `app/src/shared/config/tournament.ts`, `app/src/entities/participant/model/participant.contract.ts`, `app/src/entities/participant/index.ts`, `app/src/entities/round/model/round.contract.ts`, `app/src/entities/round/index.ts`, `app/src/entities/tournament/model/tournament.contract.ts`, `app/src/entities/tournament/index.ts`
-- Test: `app/src/entities/tournament/model/tournament.contract.test.ts`
+- Create: `web/src/shared/config/tournament.ts`, `web/src/entities/participant/model/participant.contract.ts`, `web/src/entities/participant/index.ts`, `web/src/entities/round/model/round.contract.ts`, `web/src/entities/round/index.ts`, `web/src/entities/tournament/model/tournament.contract.ts`, `web/src/entities/tournament/index.ts`
+- Test: `web/src/entities/tournament/model/tournament.contract.test.ts`
 
 **Interfaces:**
 - Produces: типы `Participant`, `Round`, `RoundKind`, `RoundStatus`, `Tournament` ровно в формах из спеки; контракты `participantContract`, `roundContract`, `tournamentContract`; константы `HEAT_SIZE = 4`, `MIN_HEAT_SIZE = 2`, `MAX_HEATS = 5`, `HEAT_DURATION_MS`, `FINAL_DURATION_MS`, `SCHEMA_VERSION = 1`
@@ -132,8 +132,8 @@ Expected: PASS
 ### Task 3: Чистая логика сетки
 
 **Files:**
-- Create: `app/src/shared/lib/shuffle/shuffle.ts`, `app/src/shared/lib/shuffle/index.ts`, `app/src/entities/tournament/lib/seed.ts`, `app/src/entities/tournament/lib/bracket.ts`
-- Test: `app/src/shared/lib/shuffle/shuffle.test.ts`, `app/src/entities/tournament/lib/seed.test.ts`, `app/src/entities/tournament/lib/bracket.test.ts`
+- Create: `web/src/shared/lib/shuffle/shuffle.ts`, `web/src/shared/lib/shuffle/index.ts`, `web/src/entities/tournament/lib/seed.ts`, `web/src/entities/tournament/lib/bracket.ts`
+- Test: `web/src/shared/lib/shuffle/shuffle.test.ts`, `web/src/entities/tournament/lib/seed.test.ts`, `web/src/entities/tournament/lib/bracket.test.ts`
 
 **Interfaces:**
 - Consumes: типы и константы из Task 2
@@ -185,9 +185,9 @@ test('findChampionId возвращает null, пока финал не сыг�
 ### Task 4: Агрегат турнира и персист
 
 **Files:**
-- Create: `app/src/entities/tournament/model/tournament.model.ts`, `app/src/entities/tournament/model/tournament.persist.ts`
-- Modify: `app/src/entities/tournament/index.ts`, `app/src/app/model/app.model.ts`
-- Test: `app/src/entities/tournament/model/tournament.persist.test.ts`
+- Create: `web/src/entities/tournament/model/tournament.model.ts`, `web/src/entities/tournament/model/tournament.persist.ts`
+- Modify: `web/src/entities/tournament/index.ts`, `web/src/app/model/app.model.ts`
+- Test: `web/src/entities/tournament/model/tournament.persist.test.ts`
 
 **Interfaces:**
 - Produces:
@@ -229,8 +229,8 @@ test('пустое хранилище даёт EMPTY_TOURNAMENT без $storageB
 ### Task 5: Жеребьёвка
 
 **Files:**
-- Create: `app/src/features/tournament-seed/model/seed.model.ts`, `app/src/features/tournament-seed/ui/seed-button.tsx`, `app/src/features/tournament-seed/index.ts`
-- Test: `app/src/features/tournament-seed/model/seed.model.test.ts`
+- Create: `web/src/features/tournament-seed/model/seed.model.ts`, `web/src/features/tournament-seed/ui/seed-button.tsx`, `web/src/features/tournament-seed/index.ts`
+- Test: `web/src/features/tournament-seed/model/seed.model.test.ts`
 
 **Interfaces:**
 - Consumes: `$participants`, `tournamentReplaced`, `splitIntoHeats`, `canSeed`
@@ -261,8 +261,8 @@ test('при 4 участниках seedRequested не меняет турнир
 ### Task 6: Таймер раунда
 
 **Files:**
-- Create: `app/src/features/round-run/model/round-run.model.ts`, `app/src/features/round-run/lib/timer.ts`, `app/src/features/round-run/ui/round-controls.tsx`, `app/src/features/round-run/index.ts`
-- Test: `app/src/features/round-run/lib/timer.test.ts`, `app/src/features/round-run/model/round-run.model.test.ts`
+- Create: `web/src/features/round-run/model/round-run.model.ts`, `web/src/features/round-run/lib/timer.ts`, `web/src/features/round-run/ui/round-controls.tsx`, `web/src/features/round-run/index.ts`
+- Test: `web/src/features/round-run/lib/timer.test.ts`, `web/src/features/round-run/model/round-run.model.test.ts`
 
 **Interfaces:**
 - Produces:
@@ -316,8 +316,8 @@ test('повторный старт running-раунда ничего не ме�
 ### Task 7: Победитель раунда и пересборка финала
 
 **Files:**
-- Create: `app/src/features/round-winner-pick/model/winner.model.ts`, `app/src/features/round-winner-pick/lib/rebuild-final.ts`, `app/src/features/round-winner-pick/ui/winner-picker.tsx`, `app/src/features/round-winner-pick/index.ts`
-- Test: `app/src/features/round-winner-pick/lib/rebuild-final.test.ts`, `app/src/features/round-winner-pick/model/winner.model.test.ts`
+- Create: `web/src/features/round-winner-pick/model/winner.model.ts`, `web/src/features/round-winner-pick/lib/rebuild-final.ts`, `web/src/features/round-winner-pick/ui/winner-picker.tsx`, `web/src/features/round-winner-pick/index.ts`
+- Test: `web/src/features/round-winner-pick/lib/rebuild-final.test.ts`, `web/src/features/round-winner-pick/model/winner.model.test.ts`
 
 **Interfaces:**
 - Produces:
@@ -354,8 +354,8 @@ test('завершить раунд без победителя нельзя', .
 ### Task 8: Участники, составы и сброс
 
 **Files:**
-- Create: `app/src/features/participants-manage/{model,lib,ui,index.ts}`, `app/src/features/round-roster-edit/{model,ui,index.ts}`, `app/src/features/tournament-reset/{model,ui,index.ts}`
-- Test: `app/src/features/participants-manage/lib/parse-names.test.ts`, `app/src/features/participants-manage/model/participants.model.test.ts`, `app/src/features/round-roster-edit/model/roster.model.test.ts`
+- Create: `web/src/features/participants-manage/{model,lib,ui,index.ts}`, `web/src/features/round-roster-edit/{model,ui,index.ts}`, `web/src/features/tournament-reset/{model,ui,index.ts}`
+- Test: `web/src/features/participants-manage/lib/parse-names.test.ts`, `web/src/features/participants-manage/model/participants.model.test.ts`, `web/src/features/round-roster-edit/model/roster.model.test.ts`
 
 **Interfaces:**
 - Produces:
@@ -391,9 +391,9 @@ test('сброс требует подтверждения и возвращае
 ### Task 9: Роутинг и каркас страниц
 
 **Files:**
-- Create: `app/src/shared/routes/index.ts`, `app/src/app/routes/router.ts`, `app/src/pages/{setup,bracket,round,results}/{index.ts,route.ts,ui/*.tsx}`, `app/src/app/providers/router-provider.tsx`
-- Modify: `app/src/app/model/app.model.ts`
-- Test: `app/src/app/routes/router.test.ts`
+- Create: `web/src/shared/routes/index.ts`, `web/src/app/routes/router.ts`, `web/src/pages/{setup,bracket,round,results}/{index.ts,route.ts,ui/*.tsx}`, `web/src/app/providers/router-provider.tsx`
+- Modify: `web/src/app/model/app.model.ts`
+- Test: `web/src/app/routes/router.test.ts`
 
 **Interfaces:**
 - Produces: `routes.setup`, `routes.bracket`, `routes.round` (параметр `roundId`), `routes.results`
@@ -423,9 +423,9 @@ test('с определившимся чемпионом appStarted открыв
 ### Task 10: Экраны
 
 **Files:**
-- Create: `app/src/widgets/bracket-board/{ui,index.ts}`, `app/src/widgets/round-runner/{ui,index.ts}`, `app/src/shared/lib/time/format.ts`
+- Create: `web/src/widgets/bracket-board/{ui,index.ts}`, `web/src/widgets/round-runner/{ui,index.ts}`, `web/src/shared/lib/time/format.ts`
 - Modify: страницы из Task 9
-- Test: `app/src/shared/lib/time/format.test.ts`
+- Test: `web/src/shared/lib/time/format.test.ts`
 
 **Interfaces:**
 - Produces: `formatMmSs(ms: number): string`
@@ -462,8 +462,8 @@ Run: `npx eslint . && npx steiger src`
 ### Task 11: Экран повреждённых данных и приёмка
 
 **Files:**
-- Create: `app/src/pages/broken-storage/{index.ts,ui/broken-storage-page.tsx}`
-- Modify: `app/src/app/providers/app-provider.tsx`, `app/README.md`
+- Create: `web/src/pages/broken-storage/{index.ts,ui/broken-storage-page.tsx}`
+- Modify: `web/src/app/providers/app-provider.tsx`, `web/README.md`
 
 - [ ] **Step 1: Написать падающий тест**
 
@@ -475,7 +475,7 @@ test('при $storageBroken приложение показывает экран
 
 Две кнопки: «Начать заново» (пишет `EMPTY_TOURNAMENT` и снимает флаг) и «Выгрузить JSON» (скачивает `$rawBrokenPayload` файлом). Текст объясняет, что произошло, без слова «ошибка валидации контракта».
 
-- [ ] **Step 3: Написать `app/README.md`**
+- [ ] **Step 3: Написать `web/README.md`**
 
 Как запустить, как устроена архитектура, почему таймер хранит `deadlineAt`, почему нет `effector-refetch` и IndexedDB. Это цель «референс» из спеки — без README она не выполнена.
 
