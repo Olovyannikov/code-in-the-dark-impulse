@@ -29,7 +29,10 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
 
-      - run: npm ci
+      # Не npm ci: lock генерируется на macOS и для Linux-раннера неполон —
+      # npm пишет безверсионные заглушки для необязательных peer-зависимостей
+      # rolldown, на которых npm ci падает с «Invalid Version».
+      - run: npm install --no-audit --no-fund
 
       - run: npx vitest run
 
