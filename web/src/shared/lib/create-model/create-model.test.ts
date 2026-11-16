@@ -1,7 +1,7 @@
 import { createEvent, createStore, fork, allSettled } from 'effector';
 import { expect, test } from 'vitest';
 
-import { createModel } from './model';
+import { createModel } from './create-model';
 
 const CounterModel = createModel(() => {
   const increased = createEvent();
