@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Столовая «Легаси»</title>
+<style>
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1920px; height:1080px; overflow:hidden; position:relative;
+    background:url('assets/img/gingham.svg');
+    font-family:'ALS Hauss', Helvetica, Arial, sans-serif; color:#2B1B12;
+  }
+  .menu { position:absolute; left:220px; top:70px; width:1060px; height:940px; background:#FFFDF4; padding:24px; transform:rotate(-2deg); }
+  .menu .in { height:100%; border:3px dashed #2B1B12; padding:64px 72px; }
+  .sub { font-size:24px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:#D62D2D; }
+  h1 { margin-top:16px; font-size:96px; font-weight:500; letter-spacing:-0.04em; line-height:1; }
+  .note { margin-top:14px; font-size:26px; color:#8A7A6E; }
+  ul { list-style:none; margin-top:56px; }
+  li { display:flex; align-items:baseline; gap:16px; font-size:34px; margin-bottom:30px; }
+  li .dots { flex:1; border-bottom:4px dotted #2B1B12; }
+  li b { font-weight:500; color:#D62D2D; }
+  li small { display:block; font-size:22px; color:#8A7A6E; margin-top:4px; }
+  .badge { position:absolute; left:1150px; top:90px; width:280px; height:280px; border-radius:50%; background:#D62D2D; color:#fff;
+           display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transform:rotate(14deg);
+           border:8px solid #fff; outline:4px solid #D62D2D; }
+  .badge span { font-size:24px; }
+  .badge b { font-size:40px; font-weight:500; line-height:1; margin-top:8px; }
+  .chef { position:absolute; right:150px; bottom:-20px; width:440px; height:520px; }
+</style>
+</head>
+<body>
+  <div class="menu"><div class="in">
+    <div class="sub">Меню на четверг</div>
+    <h1>Столовая «Легаси»</h1>
+    <div class="note">Готовим с 2009 года. Рецепт никто не помнит.</div>
+    <ul>
+      <li><div>Спагетти-код<small>с соусом из глобальных переменных</small></div><span class="dots"></span><b>300 ₽</b></li>
+      <li><div>Хотфикс быстрого приготовления</div><span class="dots"></span><b>999 ₽</b></li>
+      <li><div>Компот из зависимостей</div><span class="dots"></span><b>1 ГБ</b></li>
+      <li><div>Пирожок с багом</div><span class="dots"></span><b>в подарок</b></li>
+      <li><div>Легаси под бешамелью</div><span class="dots"></span><b>даром</b></li>
+    </ul>
+  </div></div>
+  <div class="badge"><span>Блюдо дня</span><b>Спагетти-<br>код</b></div>
+  <img class="chef" src="assets/img/chef.svg" alt="">
+</body>
+</html>

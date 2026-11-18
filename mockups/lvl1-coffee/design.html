@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Сначала кофе</title>
+<style>
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1920px; height:1080px; overflow:hidden; position:relative;
+    background:#F3E9DC url('assets/img/beans.svg');
+    color:#3B2416; font-family:'ALS Hauss', Helvetica, Arial, sans-serif;
+  }
+  header { position:absolute; top:56px; left:96px; right:96px; display:flex; justify-content:space-between; font-size:26px; font-weight:500; }
+  header b { color:#E8662A; font-weight:500; }
+  main { position:absolute; top:250px; left:96px; }
+  .kicker { display:inline-block; background:#3B2416; color:#F3E9DC; padding:10px 20px; font-size:24px; font-weight:500; }
+  h1 { margin-top:36px; font-size:150px; font-weight:500; line-height:0.88; letter-spacing:-0.05em; }
+  h1 span { color:#E8662A; }
+  p { margin-top:36px; font-size:32px; max-width:720px; line-height:1.25; }
+  .btn { display:inline-block; margin-top:48px; background:#E8662A; color:#fff; padding:24px 52px; border-radius:60px; font-size:30px; font-weight:500; }
+  .cup { position:absolute; right:120px; top:240px; width:640px; height:640px; }
+</style>
+</head>
+<body>
+  <header><span>Кофейня «Стек»</span><b>+1</b></header>
+  <main>
+    <div class="kicker">Перерыв 15 минут</div>
+    <h1>Сначала кофе.<br><span>Потом код.</span></h1>
+    <p>Капучино на овсяном, раф с багами и эспрессо для тех, кто дежурит.</p>
+    <a class="btn">Налить ещё</a>
+  </main>
+  <img class="cup" src="assets/img/cup.svg" alt="">
+</body>
+</html>
