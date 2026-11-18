@@ -6,7 +6,7 @@ import type { Participant } from '@/entities/participant';
 import type { Round } from '@/entities/round';
 import { RoundStatusBadge } from '@/entities/round';
 import { TournamentModel } from '@/entities/tournament';
-import { HEAT_SIZE } from '@/shared/config';
+import { findMockup, HEAT_SIZE } from '@/shared/config';
 import { formatMmSs } from '@/shared/lib/time';
 import { routes } from '@/shared/routes';
 
@@ -24,6 +24,7 @@ function RoundCard({ round, title, participants, onOpen }: CardProps) {
   const isLive = round.status === 'running' || round.status === 'paused';
 
   // Свободные места показываем явно: оператор видит, куда сажать опоздавшего.
+  const mockup = findMockup(round.mockupId ?? null);
   const freeSeats = Math.max(HEAT_SIZE - round.participantIds.length, 0);
   const seats: (string | null)[] =
     round.status === 'pending'
@@ -52,6 +53,12 @@ function RoundCard({ round, title, participants, onOpen }: CardProps) {
             <RoundStatusBadge status={round.status} />
           </Group>
         </Group>
+
+        {mockup && (
+          <Text size="xs" c="impulse" truncate>
+            {mockup.title}
+          </Text>
+        )}
 
         <Stack gap={2} style={{ flex: 1 }}>
           {seats.map((id, index) => (

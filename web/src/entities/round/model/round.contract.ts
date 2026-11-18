@@ -13,6 +13,12 @@ export const roundStatusContract = or(
 const nullableStr = or(str, val(null));
 const nullableNum = or(num, val(null));
 
+/**
+ * Макет раунда. Поле необязательное: турниры, сохранённые до появления
+ * уровней, должны читаться без миграции.
+ */
+const optionalMockupId = or(str, val(null), val(undefined));
+
 export const roundContract = obj({
   id: str,
   kind: roundKindContract,
@@ -23,6 +29,7 @@ export const roundContract = obj({
   durationMs: num,
   deadlineAt: nullableNum,
   remainingMs: nullableNum,
+  mockupId: optionalMockupId,
 });
 
 export type RoundKind = 'heat' | 'final';
@@ -38,4 +45,5 @@ export type Round = {
   durationMs: number;
   deadlineAt: number | null;
   remainingMs: number | null;
+  mockupId?: string | null;
 };

@@ -83,3 +83,27 @@ describe('tournamentContract', () => {
     expect(tournamentContract.getErrorMessages(broken).join(' ')).toContain('schemaVersion');
   });
 });
+
+describe('назначенный раунду макет', () => {
+  test('раунд с mockupId проходит контракт', () => {
+    const t = validTournament();
+    const withMockup = { ...t, rounds: [{ ...t.rounds[0], mockupId: 'lvl2-weather' }] };
+
+    expect(tournamentContract.isData(withMockup)).toBe(true);
+  });
+
+  test('турнир, сохранённый до появления макетов, всё ещё читается', () => {
+    const t = validTournament();
+    const legacy = { ...t, rounds: [{ ...t.rounds[0] }] };
+    delete (legacy.rounds[0] as { mockupId?: unknown }).mockupId;
+
+    expect(tournamentContract.isData(legacy)).toBe(true);
+  });
+
+  test('mockupId не строка — контракт не проходит', () => {
+    const t = validTournament();
+    const broken = { ...t, rounds: [{ ...t.rounds[0], mockupId: 42 }] };
+
+    expect(tournamentContract.isData(broken)).toBe(false);
+  });
+});
