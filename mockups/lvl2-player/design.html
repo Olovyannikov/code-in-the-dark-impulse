@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Lo-fi для отладки</title>
+<style>
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1920px; height:1080px; overflow:hidden; position:relative;
+    background:#1B1035 url('assets/img/dots.svg');
+    color:#fff; font-family:'ALS Hauss', Helvetica, Arial, sans-serif;
+    font-feature-settings:'liga' 0, 'calt' 0;
+  }
+  header { position:absolute; top:56px; left:120px; right:120px; display:flex; justify-content:space-between; font-size:26px; font-weight:500; color:#B9AEE0; }
+  header b { color:#FF5FA2; font-weight:500; }
+  .art { position:absolute; left:160px; top:220px; width:600px; height:600px; }
+  .art::before { content:''; position:absolute; left:32px; top:32px; width:600px; height:600px; background:#FF5FA2; }
+  .art img { position:relative; display:block; width:600px; height:600px; }
+  .info { position:absolute; left:880px; top:260px; right:120px; }
+  .label { font-size:24px; font-weight:500; color:#FF5FA2; text-transform:uppercase; letter-spacing:0.12em; }
+  h1 { margin-top:24px; font-size:92px; font-weight:500; letter-spacing:-0.04em; line-height:1; }
+  .artist { margin-top:20px; font-size:36px; color:#B9AEE0; }
+  .bar { margin-top:80px; height:12px; background:#3A2A6B; border-radius:6px; position:relative; }
+  .bar i { position:absolute; left:0; top:0; bottom:0; width:32%; background:#FF5FA2; border-radius:6px; }
+  .bar b { position:absolute; left:32%; top:50%; width:36px; height:36px; margin:-18px 0 0 -18px; background:#fff; border-radius:50%; }
+  .times { margin-top:18px; display:flex; justify-content:space-between; font-size:24px; color:#B9AEE0; }
+  .controls { margin-top:56px; display:flex; align-items:center; gap:36px; }
+  .controls span { width:96px; height:96px; border-radius:50%; border:4px solid #B9AEE0; display:flex; align-items:center; justify-content:center; font-size:32px; color:#B9AEE0; }
+  .controls .play { width:150px; height:150px; border:0; background:#FF5FA2; color:#fff; font-size:56px; }
+</style>
+</head>
+<body>
+  <header><span>Плейлист «Отладка до утра»</span><b>+1</b></header>
+  <div class="art"><img src="assets/img/cover.svg" alt=""></div>
+  <div class="info">
+    <div class="label">Сейчас играет</div>
+    <h1>console.log('почему')</h1>
+    <div class="artist">Сеньор и стек-трейс</div>
+    <div class="bar"><i></i><b></b></div>
+    <div class="times"><span>03:14</span><span>10:00</span></div>
+    <div class="controls"><span>⏮</span><span class="play">▶</span><span>⏭</span></div>
+  </div>
+</body>
+</html>

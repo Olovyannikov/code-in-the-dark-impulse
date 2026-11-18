@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Погода в продакшене</title>
+<style>
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Regular.woff2') format('woff2'); font-weight:400; font-display:block; }
+  @font-face { font-family:'ALS Hauss'; src:url('assets/fonts/ALSHauss-Medium.woff2') format('woff2'); font-weight:500; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1920px; height:1080px; overflow:hidden; position:relative;
+    background:url('assets/img/sky.svg') center / cover;
+    color:#fff; font-family:'ALS Hauss', Helvetica, Arial, sans-serif;
+  }
+  header { position:absolute; top:56px; left:96px; right:96px; display:flex; justify-content:space-between; font-size:30px; font-weight:500; }
+  .now { position:absolute; top:170px; left:96px; display:flex; align-items:center; gap:40px; }
+  .now img { width:280px; height:280px; }
+  .temp { font-size:300px; font-weight:500; line-height:0.85; letter-spacing:-0.06em; }
+  .desc { position:absolute; top:500px; left:96px; font-size:44px; font-weight:500; }
+  .desc span { display:block; margin-top:12px; font-size:30px; font-weight:400; opacity:.85; }
+  .days { position:absolute; left:96px; right:96px; bottom:80px; display:flex; gap:24px; }
+  .day { flex:1; background:#fff; color:#0B2540; border-radius:28px; padding:28px 32px; display:flex; align-items:center; gap:24px; }
+  .day img { width:96px; height:96px; }
+  .day .d { font-size:22px; color:#5A6B80; }
+  .day .t { font-size:56px; font-weight:500; letter-spacing:-0.04em; line-height:1; margin:6px 0; }
+  .day .n { font-size:22px; }
+  .day.bad { background:#0B2540; color:#fff; }
+  .day.bad .d { color:#A9DCFF; }
+</style>
+</head>
+<body>
+  <header><span>📍 Продакшен</span><span>Четверг, 19 ноября</span></header>
+  <div class="now">
+    <img src="assets/img/storm.svg" alt="">
+    <div class="temp">500°</div>
+  </div>
+  <div class="desc">Внутренняя ошибка сервера<span>Ощущается как 503. Ветер в логах до 40 строк в секунду.</span></div>
+  <div class="days">
+    <div class="day"><img src="assets/img/sun.svg" alt=""><div><div class="d">Понедельник</div><div class="t">200°</div><div class="n">Всё ок</div></div></div>
+    <div class="day"><img src="assets/img/cloud.svg" alt=""><div><div class="d">Вторник</div><div class="t">301°</div><div class="n">Переезд</div></div></div>
+    <div class="day"><img src="assets/img/cloud.svg" alt=""><div><div class="d">Среда</div><div class="t">418°</div><div class="n">Я чайник</div></div></div>
+    <div class="day bad"><img src="assets/img/storm.svg" alt=""><div><div class="d">Пятница</div><div class="t">500°</div><div class="n">Деплой</div></div></div>
+  </div>
+</body>
+</html>

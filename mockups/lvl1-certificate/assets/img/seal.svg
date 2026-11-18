@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <polygon fill="#C8A23A" points="150,0 172,40 214,18 220,64 266,62 250,106 292,126 256,154 286,190 240,200 248,246 204,238 190,282 150,256 110,282 96,238 52,246 60,200 14,190 44,154 8,126 50,106 34,62 80,64 86,18 128,40"/>
+  <circle cx="150" cy="150" r="96" fill="none" stroke="#fff" stroke-width="6"/>
+  <text x="150" y="140" text-anchor="middle" font-family="Helvetica, Arial" font-weight="700" font-size="34" fill="#fff">100%</text>
+  <text x="150" y="182" text-anchor="middle" font-family="Helvetica, Arial" font-weight="700" font-size="22" fill="#fff">ЛОКАЛЬНО</text>
+</svg>
